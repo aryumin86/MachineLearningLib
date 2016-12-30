@@ -1,4 +1,4 @@
-﻿using MachineLearningLib;
+﻿using ru.aryumin.MachineLearningLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
