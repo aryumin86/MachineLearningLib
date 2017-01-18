@@ -155,10 +155,81 @@ namespace MachineLearningLib
         public double GetDeterminant()
         {
             if (this.matrixBase.GetLength(0) != this.matrixBase.GetLength(1))
-                throw new FormatException("Matrices should be squared");
+                throw new InvalidOperationException("Matrices should be squared");
 
+            //new matrix with new columns (we need the same number of columns - 1) for the same values 
+            //from beginning of matrix
+            double[,] extendedMatrixBase = new double[this.matrixBase.GetLength(0), 
+                this.matrixBase.GetLength(1) + this.matrixBase.GetLength(1) - 1];
 
-            return 0.0;
+            //filling part of new matrix with the same values as in this object matrix
+            for(int i = 0; i < this.matrixBase.GetLength(0); i++)
+            {
+                for(int j = 0; j < this.matrixBase.GetLength(1); j++)
+                {
+                    extendedMatrixBase[i, j] = this.matrixBase[i, j];
+                }
+            }
+
+            //filling new columns with values the same as at beginning of matrix
+            for(int i = 0; i < this.matrixBase.GetLength(0); i++)
+            {
+                for(int j = this.matrixBase.GetLength(1); j < extendedMatrixBase.GetLength(1); j++)
+                {
+                    extendedMatrixBase[i, j] = this.matrixBase[i, j - this.matrixBase.GetLength(0)];
+                }
+            }
+
+            Matrix extendedMatrix = new Matrix(extendedMatrixBase);
+
+            //calculating determinant
+            double determinant = 0.0;
+
+            //summing
+            double sumsResult = 0.0;
+            for(int i = 0; i < this.matrixBase.GetLength(0); i++)
+            {
+                int row = 0;
+                int column = i;
+
+                double diagonalResult = 1.0;
+                for (int j = 0; j < this.matrixBase.GetLength(0); j++, row++, column++)
+                {
+                    diagonalResult *= extendedMatrix.matrixBase[row,column];
+                }
+                sumsResult += diagonalResult;
+            }
+
+            //substracting
+            double substractionsResult = 0.0;
+            for (int i = 0; i < this.matrixBase.GetLength(0); i++)
+            {
+                int row = 0;
+                int column = extendedMatrix.matrixBase.GetLength(1) - 1 - i;
+
+                double diagonalResult = 1.0;
+                for(int j = 0; j < this.matrixBase.GetLength(0); j++, row++, column--)
+                {
+                    diagonalResult *= extendedMatrix.matrixBase[row, column];
+                }
+                substractionsResult += diagonalResult;
+            }
+
+            determinant = sumsResult - substractionsResult;
+
+            return determinant;
+        }
+
+        /// <summary>
+        /// Is matrix invertable?
+        /// </summary>
+        /// <returns></returns>
+        public bool isInvertable()
+        {
+            if (this.GetDeterminant() != 0)
+                return true;
+            else
+                return false;
         }
 
 
@@ -169,7 +240,12 @@ namespace MachineLearningLib
         /// <returns></returns>
         public Matrix InvertMatrix(Matrix matrixA)
         {
+            if (this.isInvertable())
+            {
 
+            }
+            else
+                throw new InvalidOperationException("Matrix is not invertable");
 
             return null;
         }

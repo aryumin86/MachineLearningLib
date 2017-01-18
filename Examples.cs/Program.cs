@@ -29,11 +29,31 @@ namespace Examples.cs
             b[0, 2] = 3;
             b[1, 0] = 2;
             b[1, 1] = 5;
-            b[1, 2] = 6;            
+            b[1, 2] = 6;
 
+            //double[,] sqvArr = new double[2, 2];
+            //sqvArr[0, 0] = 1;
+            //sqvArr[0, 1] = 7;
+            //sqvArr[1, 0] = 3;
+            //sqvArr[1, 1] = 2;
+
+            double[,] sqvArr = new double[3, 3];
+            sqvArr[0, 0] = 4;
+            sqvArr[0, 1] = 4;
+            sqvArr[0, 2] = -2;
+            sqvArr[1, 0] = -1;
+            sqvArr[1, 1] = 5;
+            sqvArr[1, 2] = 0;
+            sqvArr[2, 0] = 1;
+            sqvArr[2, 1] = 3;
+            sqvArr[2, 2] = 0;
 
             Matrix matrixA = new Matrix(a);
             Matrix matrixB = new Matrix(b);
+            Matrix matrixSkv = new Matrix(sqvArr);
+
+            //determinant of matrix
+            double determinant = matrixSkv.GetDeterminant();
 
             //Transporate matrix
             Console.WriteLine(matrixA);

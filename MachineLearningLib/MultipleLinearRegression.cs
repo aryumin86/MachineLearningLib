@@ -11,6 +11,6 @@ namespace MachineLearningLib
     /// </summary>
     public class MultipleLinearRegression
     {
-        //smth2
+        
     }
 }
