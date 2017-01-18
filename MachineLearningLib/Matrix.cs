@@ -149,13 +149,26 @@ namespace MachineLearningLib
         }
 
         /// <summary>
+        /// Get matrix determinant
+        /// </summary>
+        /// <returns></returns>
+        public double GetDeterminant()
+        {
+            if (this.matrixBase.GetLength(0) != this.matrixBase.GetLength(1))
+                throw new FormatException("Matrices should be squared");
+
+
+            return 0.0;
+        }
+
+
+        /// <summary>
         /// Invert matrix.
         /// </summary>
         /// <param name="matrixA"></param>
         /// <returns></returns>
         public Matrix InvertMatrix(Matrix matrixA)
         {
-
 
 
             return null;
