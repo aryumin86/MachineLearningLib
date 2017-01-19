@@ -38,19 +38,22 @@ namespace Examples.cs
             //sqvArr[1, 1] = 2;
 
             double[,] sqvArr = new double[3, 3];
-            sqvArr[0, 0] = 4;
-            sqvArr[0, 1] = 4;
-            sqvArr[0, 2] = -2;
-            sqvArr[1, 0] = -1;
-            sqvArr[1, 1] = 5;
-            sqvArr[1, 2] = 0;
-            sqvArr[2, 0] = 1;
-            sqvArr[2, 1] = 3;
-            sqvArr[2, 2] = 0;
+            sqvArr[0, 0] = -1;
+            sqvArr[0, 1] = -2;
+            sqvArr[0, 2] = 2;
+            sqvArr[1, 0] = 2;
+            sqvArr[1, 1] = 1;
+            sqvArr[1, 2] = 1;
+            sqvArr[2, 0] = 3;
+            sqvArr[2, 1] = 4;
+            sqvArr[2, 2] = 5;
 
             Matrix matrixA = new Matrix(a);
             Matrix matrixB = new Matrix(b);
             Matrix matrixSkv = new Matrix(sqvArr);
+
+            //Invert matrix
+            Matrix invertedSkv = matrixSkv.Invert();
 
             //determinant of matrix
             double determinant = matrixSkv.GetDeterminant();

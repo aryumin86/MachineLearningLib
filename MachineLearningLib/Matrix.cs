@@ -156,6 +156,15 @@ namespace MachineLearningLib
         {
             if (this.matrixBase.GetLength(0) != this.matrixBase.GetLength(1))
                 throw new InvalidOperationException("Matrices should be squared");
+            
+            //if it is 2x2 matrix
+            if(this.matrixBase.GetLength(0) == 2)
+            {
+                return this.matrixBase[0, 0] * this.matrixBase[1, 1]
+                    - this.matrixBase[0, 1] * this.matrixBase[1, 0];
+            }
+
+
 
             //new matrix with new columns (we need the same number of columns - 1) for the same values 
             //from beginning of matrix
@@ -237,11 +246,44 @@ namespace MachineLearningLib
         /// Invert matrix.
         /// </summary>
         /// <param name="matrixA"></param>
-        /// <returns></returns>
-        public Matrix InvertMatrix(Matrix matrixA)
+        /// <returns>new inverted matrix</returns>
+        public Matrix Invert()
         {
+            Matrix invertedMatrix;
+
             if (this.isInvertable())
             {
+                //Getting matrix of minors
+                Matrix matrixOfMinors = new Matrix(new double[matrixBase.GetLength(0), matrixBase.GetLength(1)]);
+
+                for (int row = 0; row < matrixBase.GetLength(0); row++)
+                {
+                    for(int column= 0; column < matrixBase.GetLength(1); column++)
+                    {
+                        double[,] subMArrBase = new double[matrixBase.GetLength(0)-1,matrixBase.GetLength(1)-1];
+                        Matrix subMatrix = new Matrix(subMArrBase);
+
+                        int subMRow = 0;
+                        for(int r = 0; r < matrixBase.GetLength(0); r++)
+                        {
+                            if (row == r)
+                                continue;
+                            int subMColumn = 0;
+                            for (int c = 0; c < matrixBase.GetLength(1); c++)
+                            {
+                                if (column == c)
+                                    continue;
+
+                                subMArrBase[subMRow, subMColumn] = this.matrixBase[r, c];
+                                subMColumn++;
+                            }
+                            subMRow++;
+                        }
+
+                        matrixOfMinors.matrixBase[row, column] = subMatrix.GetDeterminant();
+                    }
+                }
+
 
             }
             else
