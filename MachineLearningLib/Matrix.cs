@@ -113,7 +113,7 @@ namespace MachineLearningLib
         /// </summary>
         /// <param name="scalar"></param>
         /// <returns>Returns NEW matrix</returns>
-        public Matrix MultiplyToScalar(int scalar)
+        public Matrix MultiplyToScalar(double scalar)
         {
             Matrix m = new Matrix(this.matrixBase);
             for (int i = 0; i < this.matrixBase.GetLength(0); i++)
@@ -132,7 +132,7 @@ namespace MachineLearningLib
         /// Transporate matrix.
         /// </summary>
         /// <param name="matrixA"></param>
-        public Matrix TransporateMatrix()
+        public Matrix Transpose()
         {
             Matrix newMatrix = new Matrix(new double[this.matrixBase.GetLength(1), this.matrixBase.GetLength(0)]);
 
@@ -284,12 +284,33 @@ namespace MachineLearningLib
                     }
                 }
 
+                //creating cofactor matrix
+                int rowStartMultiplier;
+                for(int i = 0; i < matrixOfMinors.matrixBase.GetLength(0); i++)
+                {
+                    if (i % 2 == 0)
+                        rowStartMultiplier = 1;
+                    else
+                        rowStartMultiplier = -1;
+
+                    for(int j = 0; j < matrixOfMinors.matrixBase.GetLength(1); j++)
+                    {
+                        matrixOfMinors.matrixBase[i, j] *= rowStartMultiplier;
+                        //swap
+                        rowStartMultiplier *= -1;
+                    }
+                }
+
+                //determinant of THIS matrix
+                double determinant = this.GetDeterminant();
+                Matrix transposed = matrixOfMinors.Transpose();
+                invertedMatrix = transposed.MultiplyToScalar(1 / determinant);
 
             }
             else
                 throw new InvalidOperationException("Matrix is not invertable");
 
-            return null;
+            return invertedMatrix;
         }
 
     }

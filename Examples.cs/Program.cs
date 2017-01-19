@@ -61,7 +61,7 @@ namespace Examples.cs
             //Transporate matrix
             Console.WriteLine(matrixA);
             Console.WriteLine("\n");
-            matrixA = matrixA.TransporateMatrix();
+            matrixA = matrixA.Transpose();
             Console.WriteLine(matrixA);
 
             //Multipling to scalar
