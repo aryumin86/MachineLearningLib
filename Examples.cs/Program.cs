@@ -15,6 +15,22 @@ namespace Examples.cs
 
         static void Main(string[] args)
         {
+            //getting matrix from file
+            Matrix mFromFile = Matrix.GetMatrixFromTXT("data\\regress_data.txt", '\t');
+
+            //Muliple Linear Regression
+            var mlr = new MultipleLinearRegression();
+            int[] rows = Enumerable.Range(0, mFromFile.matrixBase.GetLength(0))
+                        .Select(i => i)
+                        .ToArray();
+            Matrix bVector = mlr.GetBCoefficientsForMatrix(mFromFile.GetMatrixPart(rows, new int[] { 1, 2, 3 }), 
+                mFromFile.GetMatrixPart(rows, new int[] { 0 }));
+            //getting y for x0 = 1, x2 = 81, x3 = 259
+            double y = mlr.GetYForVectorXs(bVector, new int[] { 1, 81, 259 });
+
+            Console.WriteLine(mFromFile + "\n");
+            Console.WriteLine("y for x0 = 1, x1 = 81, x2 = 259 = " + y);
+
             double[,] a = new double[3,2];
             a[0, 0] = 2;
             a[0, 1] = 6;

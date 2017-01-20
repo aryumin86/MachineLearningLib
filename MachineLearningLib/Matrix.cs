@@ -11,7 +11,7 @@ namespace MachineLearningLib
     /// </summary>
     public class Matrix
     {
-        private double[,] matrixBase;
+        public double[,] matrixBase;
 
         public Matrix(double[,] matrixBase)
         {
@@ -88,7 +88,7 @@ namespace MachineLearningLib
         /// <returns></returns>
         public static Matrix MultiplyMatrices(Matrix matrixA, Matrix matrixB)
         {
-            if (matrixA.matrixBase.GetLength(0) != matrixB.matrixBase.GetLength(1))
+            if (matrixA.matrixBase.GetLength(1) != matrixB.matrixBase.GetLength(0))
                 throw new FormatException("matrixA's dimensions number is diffrent from matrixB dimensions[0] length");
 
             Matrix matrixC = new Matrix(new double[matrixA.matrixBase.GetLength(0), matrixB.matrixBase.GetLength(1)]);
@@ -311,6 +311,69 @@ namespace MachineLearningLib
                 throw new InvalidOperationException("Matrix is not invertable");
 
             return invertedMatrix;
+        }
+
+        /// <summary>
+        /// get matrix from txt UTF-8 encoded file with data
+        /// </summary>
+        /// <param name="fileDir">file direction</param>
+        /// <param name="delim">delimeter of columns</param>
+        /// <returns></returns>
+        public static Matrix GetMatrixFromTXT(string fileDir, char delim)
+        {
+            Matrix result = null;
+
+            string line;
+            List<string> rawLines = new List<string>();
+
+            System.IO.StreamReader file = new System.IO.StreamReader(fileDir);
+            while ((line = file.ReadLine()) != null)
+            {
+                rawLines.Add(line);
+            }
+            file.Close();
+
+            int columns = rawLines.FirstOrDefault().Split(delim).Count();
+            int rows = rawLines.Count();
+
+            result = new Matrix(new double[rows, columns]);
+            for(int i = 0; i < rawLines.Count(); i++)
+            {
+                string[] lineData = rawLines[i].Split(delim);
+                for(int j = 0; j < columns; j++)
+                {
+                    result.matrixBase[i, j] = Double.Parse(lineData[j]);
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Get part of matrix
+        /// </summary>
+        /// <returns>new sub Matrix</returns>
+        public Matrix GetMatrixPart(int[] rows, int[] columns)
+        {
+            Matrix result = new Matrix(new double[rows.Length, columns.Length]);
+
+            int row = 0;
+            for (int i = 0; i < this.matrixBase.GetLength(0); i++)
+            {
+                if (!rows.Contains(i))
+                    continue;
+                int column = 0;
+                for (int j = 0; j < this.matrixBase.GetLength(1); j++)
+                {
+                    if (!columns.Contains(j))
+                        continue;
+
+                    result.matrixBase[row, column] = this.matrixBase[i, j];
+                    column++;
+                }
+                row++;
+            }
+            return result;
         }
 
     }
