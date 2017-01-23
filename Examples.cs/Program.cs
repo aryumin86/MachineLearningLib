@@ -15,6 +15,13 @@ namespace Examples.cs
 
         static void Main(string[] args)
         {
+            //getting matrix for parabola regression (order n)
+            Matrix mParabolaRegression = Matrix.GetMatrixFromTXT("data\\parabola_regression.txt", '\t');
+            NOrderSimpleParabolaRegression nospr = new NOrderSimpleParabolaRegression();
+            Matrix z = nospr.GetRegressionCoefficients(mParabolaRegression, 2);
+            double yVal = nospr.GetYForVectorX(z, 84.0);
+
+
             //getting matrix from file
             Matrix mFromFile = Matrix.GetMatrixFromTXT("data\\regress_data.txt", '\t');
 
